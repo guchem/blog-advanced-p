@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>blog</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+</head>
+<body>
+<nav class="navbar bg-light container">
+
+
+    <div class=" navbar-nav mr-auto w-50 ml-auto p-3" style="width: 60vw">
+        <a href="{% url 'home' %}">Home</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'create-blog' %}" >Create Blog</a>
+        {% endif %}
+
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="mr-auto ml-auto"> Log-out <sub>{{user.username}}</sub></a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}" class="mr-auto ml-auto">Register</a>
+    {% endif %}
+    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'blog-search' %}">
+        {% csrf_token %}
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name="keyword">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+{% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} ml-5">
+                {{ message }}
+              </div>
+            {% endfor %}
+{% endif %}
+<div class="container">
+    {% block body %}
+    {% if search_for %}
+        <h4 class="mt-3 ml-5">Search result for {{search_for}}</h4>
+        {% for blog in blogs %}
+        <div class="card m-2 p-2">
+            <div class="card-header">
+              <a class="mr-2" href="{% url 'user-blogs' blog.author.username %}">{{ blog.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h4><a href="{% url 'blog-detail' blog.pk %}">{{ blog.title }}</a></h4>
+            <p>{{ post.content }}</p>
+        </div>
+    {% empty %}
+    <h4 class="mt-3 ml-5 text-danger">No result found for {{search_for}}</h4>
+    {% endfor %}
+
+    {% else %}
+    {% for blog in blogs %}
+        <div class="card m-2 p-2">
+            <div class="card-header">
+              <a class="mr-2" href="{% url 'user-blogs' blog.author.username %}">{{ blog.author }}</a>
+              <small class="text-muted">{{ blog.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h4><a href="{% url 'blog-detail' blog.pk %}">{{ blog.title }}</a></h4>
+            <p>{{ blog.content }}</p>
+        </div>
+    {% endfor %}
+     {% endif %}
+
+{% endblock %}
+</div>
+</body>
+</html>

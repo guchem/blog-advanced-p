@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="card mt-5 p-5">
+      <form action="{% url 'create-blog' %}" method="post">
+          {% csrf_token %}
+        <input type="text" class="form-control m-1" name="title" placeholder="Blog Title">
+        <textarea name="content" cols="30" rows="5" class="form-control m-1" placeholder="Blog Content"></textarea>
+        <input type="submit" class="form-control btn-primary m-1" value="publish">
+      </form>
+    </div>
+
+{% endblock %}

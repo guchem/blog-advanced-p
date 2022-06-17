@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+     <section class="text-center ml-auto mr-auto pt-5 mt-5">
+          <div id="form-division" class="text-center col-lg-6 col-md-8 col-sm-12">
+            <form action="{% url 'login' %}" method="post">
+              {% csrf_token %}
+              <input class="form-control m-1" type="text" name="username" placeholder="username">
+              <input class="form-control m-1" type="password" name="password"  placeholder="password">
+              <input type=submit class="form-control btn-primary m-1" value="signin">
+              <span class="text-mute form-control">don't have an account ? <a href="#">sign up </a>here</span>
+            </form>
+          </div>
+      </section>
+{% endblock body %}

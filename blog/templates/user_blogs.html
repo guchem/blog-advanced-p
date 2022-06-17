@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="card p-3 m-2">
+    <h5>Blogs by <b>{{username}}</b></h5>
+</div>
+{% for blog in blogs %}
+        <div class="card m-2 p-2">
+            <div class="card-header">
+              <a class="mr-2" href="{% url 'user-blogs' blog.author.username %}">{{ blog.author }}</a>
+              <small class="text-muted">{{ blog.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h5><a class="article-title" href="{% url 'blog-detail' blog.pk %}">{{ blog.title }}</a></h5>
+            <p class="article-content">{{ blog.content }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
